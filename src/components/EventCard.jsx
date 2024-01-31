@@ -28,6 +28,7 @@ export const EventCard = ({ event }) => {
       flexWrap="wrap"
       backgroundColor="white"
       variant="elevated"
+
     >
       <CardHeader p="0">
         <Image
@@ -57,19 +58,19 @@ export const EventCard = ({ event }) => {
             ))}
           </Flex>
           <Text noOfLines={4}>{event.description}</Text>
-          <StatGroup display='flex' alignItems='baseline'>
+          <StatGroup gap={2} w={['xs', 'sm']} flexDir={['column', 'row']}>
             <Stat p={3}>
               <StatLabel>Starts:
               </StatLabel>
-              <StatNumber fontSize='lg'>{event.startTime.slice(11, 16)}</StatNumber>
+              <StatNumber fontSize='lg'>{event.startTime.substring(0, 10)}{" "}{event.startTime.substring(11, 16)}</StatNumber>
             </Stat>
             <Stat p={3}>
               <StatLabel>Ends:</StatLabel>
-              <StatNumber fontSize='lg'>{event.endTime.slice(11, 16)}</StatNumber>
+              <StatNumber fontSize='lg'>{event.endTime.substring(0, 10)}{" "}{event.endTime.substring(11, 16)}</StatNumber>
             </Stat>
           </StatGroup>
         </Flex>
       </CardBody>
-    </Card>
+    </Card >
   );
 };

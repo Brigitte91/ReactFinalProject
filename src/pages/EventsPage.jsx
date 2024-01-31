@@ -16,6 +16,7 @@ export const EventsPage = () => {
 
 
   const { events } = useLoaderData();
+
   return (
     <Flex gap={[6, 12]}
       flexDir={["column", "row"]}
@@ -23,7 +24,7 @@ export const EventsPage = () => {
       alignItems="center"
       flexWrap={'wrap'}>
       {events.map((event) => (
-        <Link key={event.id} to={`/event/${event.id}`}>
+        <Link key={event.id} to={`/events/${event.id}`}>
           <EventCard event={event}></EventCard>
         </Link>
       ))}
