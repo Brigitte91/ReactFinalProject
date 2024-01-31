@@ -13,20 +13,21 @@ export const loader = async () => {
 };
 
 export const EventsPage = () => {
-  
+
+
   const { events } = useLoaderData();
   return (
     <Flex gap={[6, 12]}
-    flexDir={["column", "row"]}
-    justifyContent="center"
-    alignItems="center"
-    flexWrap={'wrap'}>
+      flexDir={["column", "row"]}
+      justifyContent="center"
+      alignItems="center"
+      flexWrap={'wrap'}>
       {events.map((event) => (
-        <Link key={event.id} to={`/events/${event.id}`}>
-        <EventCard event={event}></EventCard>
+        <Link key={event.id} to={`/event/${event.id}`}>
+          <EventCard event={event}></EventCard>
         </Link>
       ))}
-      
+
     </Flex>
   );
 };
