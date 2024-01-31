@@ -45,7 +45,7 @@ export const EventCard = ({ event }) => {
           <Heading fontSize={["md", "xl"]} textAlign="center" mb={2}>
             {event.title}
           </Heading>
-          <Flex flexWrap="wrap" flexDir="row" justify="center" gap={2}>
+          <Flex flexWrap="wrap" flexDir="row" justify="center" align='center' gap={2}>
             {event.categoryIds.map((id) => (
               <Tag
                 key={id}
@@ -58,7 +58,7 @@ export const EventCard = ({ event }) => {
             ))}
           </Flex>
           <Text noOfLines={4}>{event.description}</Text>
-          <StatGroup gap={2} w={['xs', 'sm']} flexDir={['column', 'row']}>
+          <StatGroup flexDir={['column']} align='center'>
             <Stat p={3}>
               <StatLabel>Starts:
               </StatLabel>
