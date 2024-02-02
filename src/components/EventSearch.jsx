@@ -1,11 +1,13 @@
 import { Input } from "@chakra-ui/react";
-import { useState } from "react";
 
+export const EventSearch = ({ searchTerm, onSearchChange }) => {
 
-export const EventSearch = () => {
     return (
-        <>
-            <Input></Input>
-        </>
-    )
+        <Input
+            placeholder="Search events..."
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+            mb={6}
+        />
+    );
 }

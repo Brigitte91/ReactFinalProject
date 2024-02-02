@@ -1,9 +1,16 @@
 import React, { useContext } from 'react';
-import { Flex, Heading, Text, Image, Button, Modal, Tag, Stat, StatGroup, StatLabel, StatNumber, Card, Avatar } from '@chakra-ui/react';
+import {
+  Flex, Heading, Text, Image, Button, Modal, ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton, Tag, Stat, StatGroup, StatLabel, StatNumber, Card, Avatar
+} from '@chakra-ui/react';
 import { CategoryContext } from '../components/CategoryContext';
 import { UserContext } from '../components/UserContext';
 import { useLoaderData } from 'react-router-dom';
-
+import { useDisclosure } from '@chakra-ui/react';
 export const loader = async ({ params }) => {
   const event = await (await fetch(`http://localhost:3000/events?id=${params.eventId}`)).json()
   return [event]
@@ -15,6 +22,7 @@ export const EventPage = () => {
   const eventDetails = event.length > 0 ? event[0] : null;
   const { categories } = useContext(CategoryContext)
   const { users } = useContext(UserContext)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const userId = users.find((id) => {
     return id.id === eventDetails.createdBy;
@@ -62,6 +70,24 @@ export const EventPage = () => {
           <Heading fontSize='sm'>{userId.name}</Heading>
 
         </Card>
+        <Button onClick={onOpen}>Open Modal</Button>
+        <Modal>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              TExt
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant='ghost'>Secondary Action</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
 
 
       </Flex>
