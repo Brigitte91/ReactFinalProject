@@ -27,17 +27,22 @@ export const EventsPage = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-
+let searchResult = []
 
   useEffect(() => {
     if (events) {
       console.log(events)
+      if(searchTerm === ''){
+      setFilteredEvents(events)}
+      else{
       const searchResult = events.filter(event =>
         event.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
-    }
+    
+      
+
     setFilteredEvents(searchResult);
-  }
+  }}}
     , [searchTerm, events]);
 
   return (
@@ -59,23 +64,24 @@ export const EventsPage = () => {
           </Link>
         ))}
       </Flex>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button onClick={onOpen} >Add event</Button>
       <Modal isOpen={isOpen} onClose={onClose}>,
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Add event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            bodt          </ModalBody>
+            body          </ModalBody>
 
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
+            <Button variant='ghost' onClick={onClose} mr={3}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+
     </Flex>
   );
 };
