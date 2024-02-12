@@ -7,7 +7,7 @@ export const EventSearch = ({ searchTerm, onSearchChange }) => {
             placeholder="Search events..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            mb={6}
+            w='xl'
         />
     );
 }
