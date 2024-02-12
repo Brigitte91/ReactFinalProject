@@ -14,6 +14,7 @@ import { useLoaderData, Link } from "react-router-dom";
 import { EventCard } from "../components/EventCard";
 import { EventSearch } from "../components/EventSearch";
 import { CategoryContext } from "../components/CategoryContext";
+import { EventForm } from "../components/EventForm";
 
 export const loader = async () => {
   const events = await fetch('http://localhost:3000/events',);
@@ -29,6 +30,8 @@ export const EventsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+
 
   useEffect(() => {
     if (events) {
@@ -95,18 +98,13 @@ export const EventsPage = () => {
       <Button onClick={onOpen} >Add event</Button>
       <Modal isOpen={isOpen} onClose={onClose}>,
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent p={5}>
           <ModalHeader>Add event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            body          </ModalBody>
+            <EventForm initialValues={{}} />
+          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant='ghost' onClick={onClose} mr={3}>Cancel</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
 
