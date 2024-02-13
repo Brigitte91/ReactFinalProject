@@ -7,8 +7,8 @@ import {
     Input,
     Textarea,
     Checkbox,
-    CheckboxGroup,
-    useCheckboxGroup,
+    Flex,
+
     Button,
     Select
 } from "@chakra-ui/react";
@@ -16,12 +16,19 @@ import { CategoryContext } from "./CategoryContext";
 import { UserContext } from "./UserContext"
 
 
-export const EventForm = ({ initialValues }) => {
+export const EventForm = ({ initialValues = {}, onClose }) => {
     const { categories } = useContext(CategoryContext);
     const { users } = useContext(UserContext);
-    const [formData, setFormData] = useState(initialValues);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        location: '',
+        startTime: '',
+        endTime: ''
+    });
     const [user, setUser] = useState();
-    const { value: categoryIds, onChange: handleCategoryChange } = useCheckboxGroup();
+    const [checkedItems, setCheckedItems] = useState({});
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
 
     const handleChange = (e) => {
@@ -30,14 +37,19 @@ export const EventForm = ({ initialValues }) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (formData) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("handle submit initiated")
+        console.log(formData)
         try {
+
             const response = await fetch('http://localhost:3000/events', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
+
             })
 
             if (response.ok) {
@@ -55,10 +67,11 @@ export const EventForm = ({ initialValues }) => {
         setUser(e.target.value)
     }
 
-    const handleCancel = () => {
-        setFormData(initialValues);
-        onCancel();
+    const handleCategoryChange = (categoryId, isChecked) => {
+        setCheckedItems({ [categoryId]: isChecked });
+        setSelectedCategory(isChecked ? categoryId : null);
     };
+
 
     return (
         <Box as="form" onSubmit={handleSubmit}>
@@ -116,23 +129,25 @@ export const EventForm = ({ initialValues }) => {
                 </Select>
             </FormControl>
 
-            <FormControl id="categoryIds" isRequired>
+            <FormControl id="categoryIds" isRequired={selectedCategory === null}>
                 <FormLabel>Categories</FormLabel>
-                <CheckboxGroup
-                    value={categoryIds}
-                    onChange={handleCategoryChange}
-                >
+                <Flex flexdir={['column', 'row']} gap={2}>
                     {categories.map((category) => (
-                        <Checkbox key={category.id} value={category.id}>
+                        <Checkbox
+                            key={category.id}
+                            value={category.id}
+                            isChecked={checkedItems[category.id] || false}
+                            onChange={(e) => handleCategoryChange(category.id, e.target.checked)}>
                             {category.name}
                         </Checkbox>
                     ))}
-                </CheckboxGroup>
+                </Flex>
 
             </FormControl>
-            <Button type='submit' onClick={handleSubmit}>Submit</Button>
-            <Button onClick={handleCancel} variant={"ghost"}>Cancel</Button>
-
+            <Flex flexdir={['column', 'row']} gap={2} mt={2}>
+                <Button type='submit'>Submit</Button>
+                <Button onClick={onClose} variant={"ghost"}>Cancel</Button>
+            </Flex>
         </Box>
     );
 };

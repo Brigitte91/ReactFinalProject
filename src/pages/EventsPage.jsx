@@ -36,12 +36,9 @@ export const EventsPage = () => {
   useEffect(() => {
     if (events) {
       let filteredEvents = events;
-      console.log('Events:', events);
-      console.log('Selected Category (useeffect):', selectedCategory);
-
 
       if (selectedCategory !== '') {
-        console.log('filtering by category:', selectedCategory)
+
         filteredEvents = events.filter(event =>
           event.categoryIds.some(categoryId =>
             categories.find(category => category.id === categoryId)?.name === selectedCategory
@@ -61,7 +58,7 @@ export const EventsPage = () => {
   }, [searchTerm, selectedCategory, events]);
 
   const handleCategoryChange = (category) => {
-    console.log('selected category:', category)
+
     setSelectedCategory(category);
   };
 
@@ -102,7 +99,7 @@ export const EventsPage = () => {
           <ModalHeader>Add event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EventForm initialValues={{}} />
+            <EventForm initialValues={{}} onClose={onClose} />
           </ModalBody>
 
         </ModalContent>
