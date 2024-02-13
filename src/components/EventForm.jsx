@@ -21,12 +21,13 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
     const { users } = useContext(UserContext);
     const [formData, setFormData] = useState({
         title: '',
+        image: '',
         description: '',
         location: '',
         startTime: '',
         endTime: ''
     });
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(1);
     const [checkedItems, setCheckedItems] = useState({});
     const [selectedCategory, setSelectedCategory] = useState(null)
 
@@ -42,6 +43,22 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
         console.log("handle submit initiated")
         console.log(formData)
         try {
+            let newEventId = null;
+
+            if (!formData.id) {
+                const existingEventsResponse = await fetch('http://localhost:3000/events');
+                const existingEventsData = await existingEventsResponse.json();
+
+                const highestEventId = Math.max(...existingEventsData.map(event => event.id));
+                newEventId = highestEventId + 1;
+            }
+
+            if (newEventId !== null) {
+                formData.id = newEventId;
+            }
+            const selectedCategories = Object.keys(checkedItems).filter(categoryId => checkedItems[categoryId]);
+            formData.categoryIds = selectedCategories;
+            formData.createdBy = user;
 
             const response = await fetch('http://localhost:3000/events', {
                 method: 'POST',
@@ -49,27 +66,26 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
-
-            })
+            });
+            console.log(formData)
 
             if (response.ok) {
-                console.log('form data submitted successfully: ', formData)
-                onClose()
-
+                console.log('form data submitted successfully: ', formData);
+                onClose();
             }
-        }
-        catch (error) {
-            console.error('Error submitting data', error)
+        } catch (error) {
+            console.error('Error submitting data', error);
         }
     };
 
     const handleUserChange = (e) => {
         setUser(e.target.value)
+        console.log(user)
     }
 
     const handleCategoryChange = (categoryId, isChecked) => {
         setCheckedItems({ [categoryId]: isChecked });
-        setSelectedCategory(isChecked ? categoryId : null);
+        setSelectedCategory(isChecked ? parseInt(categoryId) : null);
     };
 
 
@@ -78,6 +94,11 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
             <FormControl id="title" isRequired>
                 <FormLabel>Title</FormLabel>
                 <Input name="title" value={formData.title} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl id="image" isRequired>
+                <FormLabel>Image Url</FormLabel>
+                <Input name="image" value={formData.image} onChange={handleChange} />
             </FormControl>
 
             <FormControl id="description" isRequired>
@@ -120,7 +141,7 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
 
             <FormControl id="createdBy" isRequired>
                 <FormLabel>Created By</FormLabel>
-                <Select value={user} onChange={handleUserChange}>
+                <Select defaultValue={user} value={user} onChange={handleUserChange}>
                     {users.map((user) => (
                         <option key={user.id} value={user.id}>
                             {user.name}

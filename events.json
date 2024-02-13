@@ -64,6 +64,43 @@
       "location": "Shavasana Yoga School",
       "startTime": "2023-03-09T06:00:00.000Z",
       "endTime": "2023-03-09T07:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "title": "Test",
+      "image": "Test",
+      "description": "Test",
+      "location": "Test",
+      "startTime": "2024-02-13T17:56",
+      "endTime": "2024-02-13T17:56",
+      "categoryIds": [
+        2
+      ]
+    },
+    {
+      "id": 6,
+      "title": "a",
+      "image": "a",
+      "description": "a",
+      "location": "a",
+      "startTime": "2024-02-13T18:01",
+      "endTime": "2024-02-13T18:01",
+      "categoryIds": [
+        "2"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "b",
+      "image": "b",
+      "description": "b",
+      "location": "b",
+      "startTime": "2024-02-13T18:02",
+      "endTime": "2024-02-13T18:02",
+      "categoryIds": [
+        "1"
+      ],
+      "createdBy": 1
     }
   ],
   "categories": [
