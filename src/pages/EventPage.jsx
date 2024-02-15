@@ -3,7 +3,6 @@ import {
   Flex, Heading, Text, Image, Button, Modal, ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton, Tag, Stat, StatGroup, StatLabel, StatNumber, Card, Avatar
 } from '@chakra-ui/react';
@@ -11,6 +10,8 @@ import { CategoryContext } from '../components/CategoryContext';
 import { UserContext } from '../components/UserContext';
 import { useLoaderData } from 'react-router-dom';
 import { useDisclosure } from '@chakra-ui/react';
+import { EventForm } from '../components/EventForm';
+
 export const loader = async ({ params }) => {
   const event = await (await fetch(`http://localhost:3000/events?id=${params.eventId}`)).json()
   return [event]
@@ -24,15 +25,15 @@ export const EventPage = () => {
   const { users } = useContext(UserContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+
   const userId = users.find((id) => {
     return id.id === eventDetails.createdBy;
   });
 
   if (!userId) {
-    return <p>Loading...</p>;
+    return <p>Something went wrong loading the user</p>;
   }
 
-  console.log("event data: ", event)
   return (
     <Flex flexDir='row' w='80vw' justify='center' align='center' m='auto'>
       <Flex w='60%' flexDir='column' justify='center' alignItems='start' gap={10}>
@@ -71,21 +72,14 @@ export const EventPage = () => {
 
         </Card>
         <Button onClick={onOpen}>Open Modal</Button>
-        <Modal>
+        <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Modal Title</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              TExt
+              <EventForm initialValues={eventDetails} onClose={onClose} />
             </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant='ghost'>Secondary Action</Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
 

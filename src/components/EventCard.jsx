@@ -31,14 +31,25 @@ export const EventCard = ({ event }) => {
 
     >
       <CardHeader p="0">
-        <Image
-          src={event.image}
-          w={[300, 400]}
-          h={200}
-          borderTopLeftRadius={5}
-          borderTopRightRadius={5}
-          objectFit="cover"
-        />
+        {(event.image !== "" && event.image.startsWith("https://") && (event.image.endsWith(".jpg") || event.image.endsWith(".jpeg"))) ? (
+          <Image
+            src={event.image}
+            w={[300, 400]}
+            h={200}
+            borderTopLeftRadius={5}
+            borderTopRightRadius={5}
+            objectFit="cover"
+          />
+        ) : (
+          <Image
+            src="https://assets-global.website-files.com/64022de562115a8189fe542a/6417b40028f930d9c3a3c829_Why-Using-A-Smiley-Face-Survey-Can-Boost-Your-Response-Rate.jpeg"
+            w={[300, 400]}
+            h={200}
+            borderTopLeftRadius={5}
+            borderTopRightRadius={5}
+            objectFit="cover"
+          />
+        )}
       </CardHeader>
       <CardBody>
         <Flex flexDir="column" gap={2} justify="center" align="center">

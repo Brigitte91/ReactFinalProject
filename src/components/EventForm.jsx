@@ -8,7 +8,7 @@ import {
     Textarea,
     Checkbox,
     Flex,
-
+    useToast,
     Button,
     Select
 } from "@chakra-ui/react";
@@ -16,22 +16,13 @@ import { CategoryContext } from "./CategoryContext";
 import { UserContext } from "./UserContext"
 
 
-export const EventForm = ({ initialValues = {}, onClose }) => {
+export const EventForm = ({ initialValues, onClose }) => {
     const { categories } = useContext(CategoryContext);
     const { users } = useContext(UserContext);
-    const [formData, setFormData] = useState({
-        title: '',
-        image: '',
-        description: '',
-        location: '',
-        startTime: '',
-        endTime: ''
-    });
-    const [user, setUser] = useState(1);
-    const [checkedItems, setCheckedItems] = useState({});
-    const [selectedCategory, setSelectedCategory] = useState(null)
-
-
+    const [formData, setFormData] = useState(initialValues);
+    const [user, setUser] = useState(initialValues.createdBy);
+    const [checkedItems, setCheckedItems] = useState(initialValues.categoryIds || []);
+    const toast = useToast()
     const handleChange = (e) => {
         const name = e.target.name
         const value = e.target.value
@@ -40,36 +31,75 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("handle submit initiated")
-        console.log(formData)
+
+
         try {
             let newEventId = null;
+            let response;
 
             if (!formData.id) {
                 const existingEventsResponse = await fetch('http://localhost:3000/events');
                 const existingEventsData = await existingEventsResponse.json();
 
                 const highestEventId = Math.max(...existingEventsData.map(event => event.id));
-                newEventId = highestEventId + 1;
+                newEventId = parseInt(highestEventId + 1);
             }
 
-            if (newEventId !== null) {
-                formData.id = newEventId;
-            }
-            const selectedCategories = Object.keys(checkedItems).filter(categoryId => checkedItems[categoryId]);
+            const selectedCategories = checkedItems.map(categoryId => parseInt(categoryId));
             formData.categoryIds = selectedCategories;
             formData.createdBy = user;
 
-            const response = await fetch('http://localhost:3000/events', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            console.log(formData)
+            if (newEventId !== null) {
+                formData.id = newEventId;
+
+                response = await fetch('http://localhost:3000/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+
+                });
+
+
+            } else {
+
+                response = await fetch('http://localhost:3000/events', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+
+            }
+
+
 
             if (response.ok) {
+
+                if (newEventId) {
+                    toast({
+                        title: 'Event created.',
+                        description: "Your event has been created!",
+                        status: 'success',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+
+                } else {
+                    toast({
+                        title: 'Event updated.',
+                        description: "The event was successfully updated",
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                }
                 console.log('form data submitted successfully: ', formData);
                 onClose();
             }
@@ -83,11 +113,17 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
         console.log(user)
     }
 
+
+
     const handleCategoryChange = (categoryId, isChecked) => {
-        setCheckedItems({ [categoryId]: isChecked });
-        setSelectedCategory(isChecked ? parseInt(categoryId) : null);
+        if (isChecked) {
+            setCheckedItems(prevCheckedItems => [...prevCheckedItems, categoryId]);
+        } else {
+            setCheckedItems(prevCheckedItems => prevCheckedItems.filter(id => id !== categoryId));
+        }
     };
 
+    const isCategoryChecked = categoryId => checkedItems.includes(categoryId);
 
     return (
         <Box as="form" onSubmit={handleSubmit}>
@@ -141,7 +177,7 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
 
             <FormControl id="createdBy" isRequired>
                 <FormLabel>Created By</FormLabel>
-                <Select defaultValue={user} value={user} onChange={handleUserChange}>
+                <Select value={user} onChange={handleUserChange}>
                     {users.map((user) => (
                         <option key={user.id} value={user.id}>
                             {user.name}
@@ -150,14 +186,14 @@ export const EventForm = ({ initialValues = {}, onClose }) => {
                 </Select>
             </FormControl>
 
-            <FormControl id="categoryIds" isRequired={selectedCategory === null}>
+            <FormControl id="categoryIds" isRequired={checkedItems.length === 0}>
                 <FormLabel>Categories</FormLabel>
                 <Flex flexdir={['column', 'row']} gap={2}>
                     {categories.map((category) => (
                         <Checkbox
                             key={category.id}
                             value={category.id}
-                            isChecked={checkedItems[category.id] || false}
+                            isChecked={isCategoryChecked(category.id)}
                             onChange={(e) => handleCategoryChange(category.id, e.target.checked)}>
                             {category.name}
                         </Checkbox>

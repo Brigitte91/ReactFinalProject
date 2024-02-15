@@ -6,7 +6,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton, useDisclosure, Select
 } from "@chakra-ui/react";
@@ -31,7 +30,16 @@ export const EventsPage = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-
+  const initialFormData = {
+    title: '',
+    image: '',
+    description: '',
+    location: '',
+    startTime: '',
+    endTime: '',
+    categoryIds: [],
+    createdBy: 1
+  }
 
   useEffect(() => {
     if (events) {
@@ -99,7 +107,7 @@ export const EventsPage = () => {
           <ModalHeader>Add event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EventForm initialValues={{}} onClose={onClose} />
+            <EventForm initialValues={initialFormData} onClose={onClose} />
           </ModalBody>
 
         </ModalContent>
