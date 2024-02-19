@@ -67,92 +67,15 @@
     },
     {
       "id": 5,
-      "title": "a",
-      "image": "a",
-      "description": "a",
-      "location": "a",
-      "startTime": "2024-02-15T16:22",
-      "endTime": "2024-02-15T16:22",
+      "title": "Test",
+      "image": "TR",
+      "description": "fg",
+      "location": "f",
+      "startTime": "2024-02-19T16:44",
+      "endTime": "2024-02-19T16:44",
       "categoryIds": [
-        1
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 6,
-      "title": "s",
-      "image": "s",
-      "description": "s",
-      "location": "s",
-      "startTime": "2024-02-15T17:04",
-      "endTime": "2024-02-15T17:04",
-      "categoryIds": [
-        3
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 7,
-      "title": "qq",
-      "image": "qq",
-      "description": "qq",
-      "location": "qq",
-      "startTime": "2024-02-03T17:27",
-      "endTime": "2024-02-15T17:27",
-      "categoryIds": [
+        3,
         2
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 8,
-      "title": "aa",
-      "image": "aa",
-      "description": "aa",
-      "location": "aa",
-      "startTime": "2024-02-15T18:40",
-      "endTime": "2024-02-15T17:42",
-      "categoryIds": [
-        3
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 9,
-      "title": "a",
-      "image": "a",
-      "description": "a",
-      "location": "a",
-      "startTime": "2024-02-15T17:41",
-      "endTime": "2024-02-15T17:41",
-      "categoryIds": [
-        3
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 10,
-      "title": "s",
-      "image": "s",
-      "description": "s",
-      "location": "s",
-      "startTime": "2024-02-15T17:45",
-      "endTime": "2024-02-15T17:47",
-      "categoryIds": [
-        2
-      ],
-      "createdBy": 1
-    },
-    {
-      "id": 11,
-      "title": "za",
-      "image": "a",
-      "description": "da",
-      "location": "a",
-      "startTime": "2024-02-15T17:48",
-      "endTime": "2024-02-15T17:47",
-      "categoryIds": [
-        3
       ],
       "createdBy": 1
     }

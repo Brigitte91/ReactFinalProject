@@ -7,7 +7,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalCloseButton, useDisclosure, Select
+  ModalCloseButton, useDisclosure, Select, useToast
 } from "@chakra-ui/react";
 import { useLoaderData, Link } from "react-router-dom";
 import { EventCard } from "../components/EventCard";
@@ -26,9 +26,12 @@ export const EventsPage = () => {
   const { events } = useLoaderData();
   const { categories } = useContext(CategoryContext);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const toast = useToast()
 
   const initialFormData = {
     title: '',
@@ -45,11 +48,11 @@ export const EventsPage = () => {
     if (events) {
       let filteredEvents = events;
 
-      if (selectedCategory !== '') {
+      if (selectedCategoryFilter !== '') {
 
         filteredEvents = events.filter(event =>
           event.categoryIds.some(categoryId =>
-            categories.find(category => category.id === categoryId)?.name === selectedCategory
+            categories.find(category => category.id === categoryId)?.name === selectedCategoryFilter
           )
         );
       }
@@ -63,28 +66,81 @@ export const EventsPage = () => {
 
       setFilteredEvents(filteredEvents);
     }
-  }, [searchTerm, selectedCategory, events]);
+  }, [searchTerm, selectedCategoryFilter, events]);
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryFilterChange = (category) => {
 
-    setSelectedCategory(category);
+    setSelectedCategoryFilter(category);
   };
+
+  const handleCheckedItemsUpdate = (checkedItems) => {
+    setCheckedItems(checkedItems)
+    console.log(checkedItems)
+  }
+
+  const handleAddEventSubmit = async (formData) => {
+    setIsLoading(true)
+
+    try {
+      const highestEventId = Math.max(...events.map(event => event.id));
+      const newEventId = highestEventId + 1;
+      formData.id = newEventId
+      formData.categoryIds = checkedItems
+      console.log(formData)
+
+      const response = await fetch('http://localhost:3000/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+
+      if (response.ok) {
+        toast({
+          title: 'Event created.',
+          description: "Your event has been created!",
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setFilteredEvents(prevEvents => [...prevEvents, formData])
+
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create event.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
 
   return (
     <Flex flexDir='column' align='center' justify='center'>
       <Heading mb={10}>Events</Heading>
-      <Flex flexDir='[column, row]' w={"xl"} gap={5} mb={5}>
-        <EventSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} ></EventSearch>
+      <Flex flexDir={['column', 'row']} gap={5} mb={5} >
+        <Flex w={['xs', 'md']}>
+          <EventSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} ></EventSearch>
+        </Flex>
+        <Flex w={['xs', 'md']}>
+          <label htmlFor="category">Filter by Category:</label>
+          <Select id="category" value={selectedCategoryFilter} onChange={(e) => handleCategoryFilterChange(e.target.value)}>
+            <option value="">All</option>
+            {categories.map(category => (
+              <option key={category.id} value={category.name}>{category.name}</option>
+            ))}
 
-        <label htmlFor="category">Filter by Category:</label>
-        <Select id="category" value={selectedCategory} onChange={(e) => handleCategoryChange(e.target.value)}>
-          <option value="">All</option>
-          {categories.map(category => (
-            <option key={category.id} value={category.name}>{category.name}</option>
-          ))}
-
-        </Select>
+          </Select>
+        </Flex>
       </Flex>
       <Flex
         gap={[6, 12]}
@@ -107,7 +163,7 @@ export const EventsPage = () => {
           <ModalHeader>Add event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EventForm initialValues={initialFormData} onClose={onClose} />
+            <EventForm initialValues={initialFormData} onSubmit={handleAddEventSubmit} isLoading={isLoading} onClose={onClose} updateCheckedItems={handleCheckedItemsUpdate} />
           </ModalBody>
 
         </ModalContent>
