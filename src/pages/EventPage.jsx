@@ -46,8 +46,11 @@ export const EventPage = () => {
     try {
       formData.categoryIds = checkedItems
 
-      const update = await fetch(`http://localhost:3000/events/${eventDetails.id}`, {
+      const update = await fetch(`http://localhost:3000/events/${formData.id}`, {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData)
       });
       if (update.ok) {
