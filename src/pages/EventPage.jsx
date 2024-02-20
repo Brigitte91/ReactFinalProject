@@ -117,10 +117,15 @@ export const EventPage = () => {
           <p>Loading..</p>
           <Spinner />
         </Flex>) : (
+          
 
-        <Flex flexDir={['column', 'row']} justify='center' align='center' m='auto' >
+        <Flex justify='center' align='center' >
+          <Card backgroundColor="white"
+          variant="elevated"
+          >
+            <Flex flexDir={['column', 'row']} justify='center' align='center' m='auto' p={10}>
           <Flex flexDir='column' justify='center' alignItems='start' gap={10} p={5}>
-            <Heading color='pink_900'>
+            <Heading color='pink.700' >
               {eventDetails.title}
             </Heading>
             <Flex flexWrap="wrap" flexDir="row" justify="center" gap={2} >
@@ -140,12 +145,12 @@ export const EventPage = () => {
             </Text>
             <StatGroup gap={2} w={['xs', 'sm']} flexDir={['column', 'row']}>
               <Stat>
-                <StatLabel>Starts:
+                <StatLabel color='pink.700'>Starts:
                 </StatLabel>
-                <StatNumber fontSize='lg'>{eventDetails.startTime.substring(0, 10)}{" "}{eventDetails.startTime.substring(11, 16)}</StatNumber>
+                <StatNumber fontSize='lg' >{eventDetails.startTime.substring(0, 10)}{" "}{eventDetails.startTime.substring(11, 16)}</StatNumber>
               </Stat>
               <Stat >
-                <StatLabel>Ends:</StatLabel>
+                <StatLabel color='pink.700'>Ends:</StatLabel>
                 <StatNumber fontSize='lg'>{eventDetails.endTime.substring(0, 10)}{" "}{eventDetails.endTime.substring(11, 16)}</StatNumber>
               </Stat>
             </StatGroup>
@@ -191,7 +196,10 @@ export const EventPage = () => {
               />
             )}
           </Flex>
+          </Flex>
+          </Card>
         </Flex>
+ 
 
       )}
     </>
