@@ -1,6 +1,6 @@
 export const CategorySelection = ({ categories, checkedItems, onCategoryChange }) => {
     const handleCheckboxChange = (categoryId, isChecked) => {
-        onCategoryChange(categoryId, isChecked);
+        onCategoryChange(parseInt(categoryId), isChecked);
     };
 
     return (

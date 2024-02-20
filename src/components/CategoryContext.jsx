@@ -9,12 +9,16 @@ export const CategoryContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch("http://localhost:3000/categories");
+      const categoriesData = await response.json();
+      const parsedCategories = categoriesData.map(category => ({
+        ...category,
+        id: parseInt(category.id)
+      }));
 
-      setCategories(await response.json());
+      setCategories(parsedCategories);
     };
     fetchCategories();
   }, []);
-
   return (
     <CategoryContext.Provider value={{ categories }}>
       {children}
