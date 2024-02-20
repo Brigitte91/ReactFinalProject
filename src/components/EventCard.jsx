@@ -61,7 +61,8 @@ export const EventCard = ({ event }) => {
               <Tag
                 key={id}
                 colorScheme="pink"
-                variant="subtle"
+                variant='solid'
+
                 fontSize={["xs", "sm"]}
               >
                 {categories.find((category) => category.id === id)?.name || `Unknown Category with id ${id}`}

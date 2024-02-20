@@ -117,7 +117,7 @@ export const EventPage = () => {
 
         <Flex flexDir={['column', 'row']} justify='center' align='center' m='auto' >
           <Flex flexDir='column' justify='center' alignItems='start' gap={10} p={5}>
-            <Heading>
+            <Heading color='pink_900'>
               {eventDetails.title}
             </Heading>
             <Flex flexWrap="wrap" flexDir="row" justify="center" gap={2} >
@@ -125,7 +125,7 @@ export const EventPage = () => {
                 <Tag
                   key={id}
                   colorScheme="pink"
-                  variant="subtle"
+                  variant="outline"
                   fontSize={["xs", "sm"]}
                 >
                   {categories.find((category) => category.id === id)?.name || `Unknown Category with id ${id}`}
@@ -153,7 +153,7 @@ export const EventPage = () => {
             </Card>
             <Flex flexDir={['column', 'row'
             ]} gap={5}>
-              <Button onClick={onOpen}>Edit event</Button>
+              <Button onClick={onOpen} colorScheme="pink">Edit event</Button>
               <DeleteEvent onDelete={handleDelete} />
             </Flex>
             <Modal isOpen={isOpen} onClose={onClose}>

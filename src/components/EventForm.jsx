@@ -135,9 +135,9 @@ export const EventForm = ({ initialValues, onSubmit, isLoading, onClose, updateC
                     </Flex>
 
                 </FormControl>
-                <Flex flexdir={['column', 'row']} gap={2} mt={2}>
-                    <Button type='submit'>Submit</Button>
-                    <Button onClick={onClose} variant={"ghost"}>Cancel</Button>
+                <Flex flexdir={['column', 'row']} gap={4} mt={2}>
+                    <Button type='submit' colorScheme="pink">Submit</Button>
+                    <Button onClick={onClose} colorScheme="pink" variant="outline">Cancel</Button>
                 </Flex>
             </>)}
         </Box>

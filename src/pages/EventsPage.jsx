@@ -125,9 +125,8 @@ export const EventsPage = () => {
 
 
   return (
-    <Flex flexDir='column' align='center' justify='center'>
-      <Heading mb={10}>Events</Heading>
-      <Flex flexDir={['column', 'row']} gap={5} mb={5} >
+    <Flex flexDir='column' align='center' justify='center' m={'5vh'}>
+      <Flex flexDir={['column', 'row']} gap={[2, 5]} mb={5} >
         <Flex w={['xs', 'md']}>
           <EventSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} ></EventSearch>
         </Flex>
@@ -140,6 +139,20 @@ export const EventsPage = () => {
             ))}
 
           </Select>
+        </Flex>
+        <Flex justify='center'>
+          <Button onClick={onOpen} colorScheme="pink">Add event</Button>
+          <Modal isOpen={isOpen} onClose={onClose}>,
+            <ModalOverlay />
+            <ModalContent p={5}>
+              <ModalHeader>Add event</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <EventForm initialValues={initialFormData} onSubmit={handleAddEventSubmit} isLoading={isLoading} onClose={onClose} updateCheckedItems={handleCheckedItemsUpdate} />
+              </ModalBody>
+
+            </ModalContent>
+          </Modal>
         </Flex>
       </Flex>
       <Flex
@@ -156,18 +169,7 @@ export const EventsPage = () => {
           </Link>
         ))}
       </Flex>
-      <Button onClick={onOpen} >Add event</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>,
-        <ModalOverlay />
-        <ModalContent p={5}>
-          <ModalHeader>Add event</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <EventForm initialValues={initialFormData} onSubmit={handleAddEventSubmit} isLoading={isLoading} onClose={onClose} updateCheckedItems={handleCheckedItemsUpdate} />
-          </ModalBody>
 
-        </ModalContent>
-      </Modal>
 
     </Flex >
   );

@@ -29,7 +29,7 @@ export const DeleteEvent = ({ onDelete }) => {
 
     return (
         <>
-            <Button colorScheme="red" onClick={handleDeleteClick}>Delete Event</Button>
+            <Button colorScheme="pink" variant="outline" onClick={handleDeleteClick}>Delete Event</Button>
 
             <AlertDialog
                 isOpen={isOpen}
@@ -47,10 +47,10 @@ export const DeleteEvent = ({ onDelete }) => {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
+                            <Button ref={cancelRef} onClick={onClose} colorScheme="pink" >
                                 Cancel
                             </Button>
-                            <Button colorScheme="red" onClick={handleDeleteConfirm} ml={3}>
+                            <Button onClick={handleDeleteConfirm} ml={3} colorScheme="pink" variant="outline" >
                                 Delete
                             </Button>
                         </AlertDialogFooter>

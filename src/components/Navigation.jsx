@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Flex, Button } from '@chakra-ui/react';
 
 export const Navigation = () => {
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Events</Link>
-        </li>
-        <li>
-          <Link to="/events/1">Event</Link>
-        </li>
-      </ul>
-    </nav>
+    <Flex flexDir={['column', 'row']} alignItems={'center'} justifyContent={'center'} m={5}>
+      <Button colorScheme='pink' variant='ghost' fontSize={'3xl'} >
+
+
+        <Link to="/">All Events</Link>
+
+
+      </Button>
+    </Flex>
   );
 };

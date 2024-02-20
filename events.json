@@ -78,6 +78,33 @@
         2
       ],
       "createdBy": 1
+    },
+    {
+      "id": 6,
+      "title": "gf",
+      "image": "s",
+      "description": "s",
+      "location": "s",
+      "startTime": "2024-02-20T16:02",
+      "endTime": "2024-02-20T16:02",
+      "categoryIds": [
+        1,
+        2
+      ],
+      "createdBy": 1
+    },
+    {
+      "id": 7,
+      "title": "d",
+      "image": "d",
+      "description": "d",
+      "location": "d",
+      "startTime": "2024-02-20T16:03",
+      "endTime": "2024-02-20T16:03",
+      "categoryIds": [
+        2
+      ],
+      "createdBy": 1
     }
   ],
   "categories": [
