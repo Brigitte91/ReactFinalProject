@@ -8,14 +8,15 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay,
-    AlertDialogCloseButton,
     useDisclosure
 } from "@chakra-ui/react";
+
 
 
 export const DeleteEvent = ({ onDelete }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
+
 
     const handleDeleteClick = () => {
         onOpen();

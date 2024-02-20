@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { CategoryContext } from '../components/CategoryContext';
 import { UserContext } from '../components/UserContext';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDisclosure } from '@chakra-ui/react';
 import { EventForm } from '../components/EventForm';
 import { DeleteEvent } from '../components/DeleteEvent';
@@ -31,6 +31,7 @@ export const EventPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
   const toast = useToast()
+  const navigate = useNavigate();
   const createdByUser = eventDetails?.createdBy ? users.find(user => user.id === eventDetails.createdBy) : null;
 
   const handleCheckedItemsUpdate = (checkedItems) => {
@@ -79,30 +80,30 @@ export const EventPage = () => {
   }
 
   const handleDelete = async () => {
+    try {
 
-    const response = await fetch(`http://localhost:3000/events/${eventDetails.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      const response = await fetch(`http://localhost:3000/events/${eventDetails.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`Failed to delete event. Status: ${response.status}`)
+      }
       onClose()
-
-      window.location.href = '/';
-
-    } else {
-      console.error('Failed to delete event');
+      navigate('/');
+    } catch (error) {
+      console.error('Error updating event:', error);
       toast({
+
         title: 'Error',
-        description: 'Failed to delete event.',
+        description: `Failed to update event.`,
         status: 'error',
         duration: 3000,
         isClosable: true,
       });
-
-
     }
   }
 
